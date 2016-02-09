@@ -1,4 +1,5 @@
 #include<stdio.h>
+#include<string.h>
 #include "numlib.h"
 
 void mainMenu(int *choice){
@@ -17,16 +18,21 @@ void mainMenu(int *choice){
 
 int main(){
   int choice, num;
+  char str[100];
   do{
     mainMenu(&choice);
     switch(choice){
       case 1: // numbers to words
-        printf("\nEnter a 6-digit number:\n");
+        printf("\nEnter a 6-digit number digits:\n");
         scanf("%d", &num);
         numToWords(num);
         printf("\n\n");
         break;
       case 2: // words to numbers
+        printf("\nEnter a 6-digit number in words:\n");
+        scanf("%s", str);
+        wordsToNum(str);
+        printf("\n\n");
         break;
       case 3: //words to currency
         break;

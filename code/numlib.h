@@ -103,11 +103,68 @@ void numToWords(int num){
 
 }//end of numToWords()
 
-void wordsToNum(){
+void removeBN(char x[]){
+/******************************************************************************
+	Accepts string x, removes the backslash n and replaces it
+  with backslash zero.
+******************************************************************************/
+	int i;
+	for(i = 0; i<strlen(x); i++){
+		if(x[i]=='\n'){
+			x[i] = '\0';
+		}
+	}
+}//end of removeBN()
+
+void compareOnes(char str[]){
+/******************************************************************************
+  Accepts string str and prints corresponding word-to-number form
+  for the ones place digit.
+******************************************************************************/
+  if(strcmp(str, "one")==0) printf("1");
+  else if(strcmp(str, "two")==0) printf("2");
+  else if(strcmp(str, "three")==0) printf("3");
+  else if(strcmp(str, "four")==0) printf("4");
+  else if(strcmp(str, "five")==0) printf("5");
+  else if(strcmp(str, "six")==0) printf("6");
+  else if(strcmp(str, "seven")==0) printf("7");
+  else if(strcmp(str, "eight")==0) printf("8");
+  else if(strcmp(str, "nine")==0) printf("9");
+}//end of compareOnes()
+
+void compareTens(char str[]){
+/******************************************************************************
+  Accepts string str and prints corresponding word-to-number form
+  for the tens place digit.
+******************************************************************************/
+  if(strcmp(str, "ten")==0) printf("10");
+  else if(strcmp(str, "eleven")==0) printf("11");
+  else if(strcmp(str, "twelve")==0) printf("12");
+  else if(strcmp(str, "thirteen")==0) printf("13");
+  else if(strcmp(str, "fourteen")==0) printf("14");
+  else if(strcmp(str, "fifteen")==0) printf("15");
+  else if(strcmp(str, "sixteen")==0) printf("16");
+  else if(strcmp(str, "seventeen")==0) printf("17");
+  else if(strcmp(str, "eighteen")==0) printf("18");
+  else if(strcmp(str, "nineteen")==0) printf("19");
+  else if(strcmp(str, "twenty")==0) printf("2");
+  else if(strcmp(str, "thirty")==0) printf("3");
+  else if(strcmp(str, "fourty")==0) printf("4");
+  else if(strcmp(str, "fifty")==0) printf("5");
+  else if(strcmp(str, "sixty")==0) printf("6");
+  else if(strcmp(str, "seventy")==0) printf("7");
+  else if(strcmp(str, "eighty")==0) printf("8");
+  else if(strcmp(str, "ninety")==0) printf("9");
+}//end of compareTens()
+
+void wordsToNum(char str[]){
 /******************************************************************************
   Accepts a number in word form (from zero to 1 million)
   and returns it in numerical form. Input must be in lowercase.
 ******************************************************************************/
+  removeBN(str);
+  // compareOnes(str);
+  compareTens(str);
 }//end of wordsToNum()
 
 void wordsToCurrency(){
