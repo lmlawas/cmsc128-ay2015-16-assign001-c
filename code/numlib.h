@@ -168,37 +168,44 @@ int countSpaces(char str[]){
   return cnt;
 }//end of countSpaces()
 
-void firstWord(char str[], char first[], int *n){
+char* oneWord(char str[], char first[], int *spaces){
 /******************************************************************************
-  Accepts a string str and gets the first word from the string of words
-  starting from str[n]
+  Accepts a string str and gets the word based on number of spaces,
+  then returns address of
 ******************************************************************************/
-    int i=0;
-    int p;
-    p = *n;
-    printf("%s", str);
+  int i, j=0;
 
-    while(str[p]!=' ' || str[p]!='\0'){
-      first[i] = str[p];
-      // printf("%c\n", str[p]);
-      i++;
-      p++;
+  for(i=0;i<strlen(str);i++){
+    // if space or null character is encountered and spaces not zero
+    if((str[i]==' ' || str[i]=='\0') && *spaces!=0){
+      first[j] = '\0';  // null character to end strig first
+      (*spaces)--;
+      return &str[i+1];
     }
-    *n = p;
-}//end of firstWord()
+    // else part of first string
+    else{
+      first[j] = str[i];
+      j++;
+    }
+  }
+  return NULL;
+}//end of oneWord()
 
 void wordsToNum(char str[]){
 /******************************************************************************
   Accepts a number in word form (from zero to 1 million)
   and returns it in numerical form. Input must be in lowercase.
 ******************************************************************************/
-  int cnt, spaces, n=0;  // if 1 = million, 2 = thousand, 3 = hundred
-  char current[20], remaining[100];
+  int spaces, cnt=0;
+  char current[20]="abc", remaining[100];
+  char *p;
 
   removeBN(str);
   spaces = countSpaces(str);
   printf("spaces: %d\n", spaces);
-  // compareOnes(str);
+  p = oneWord(str, current, &spaces);
+  printf("s: %s", current);
+  compareOnes(current);
   // compareTens(str);
 }//end of wordsToNum()
 
