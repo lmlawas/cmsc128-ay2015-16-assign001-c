@@ -31,7 +31,8 @@ int main(){
         break;
       case 2: // words to numbers
         printf("\nEnter a 6-digit number in words:\n");
-        scanf("%s", str);
+        getchar();
+        gets(str);
         wordsToNum(str);
         printf("\n\n");
         break;

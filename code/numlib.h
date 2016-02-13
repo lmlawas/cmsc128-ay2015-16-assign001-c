@@ -157,14 +157,49 @@ void compareTens(char str[]){
   else if(strcmp(str, "ninety")==0) printf("9");
 }//end of compareTens()
 
+int countSpaces(char str[]){
+/******************************************************************************
+  Accepts a string str and returns the number of spaces in that string
+******************************************************************************/
+  int i, cnt=0;
+  for(i=0;i<strlen(str);i++){
+    if(str[i]==' ') cnt++;
+  }
+  return cnt;
+}//end of countSpaces()
+
+void firstWord(char str[], char first[], int *n){
+/******************************************************************************
+  Accepts a string str and gets the first word from the string of words
+  starting from str[n]
+******************************************************************************/
+    int i=0;
+    int p;
+    p = *n;
+    printf("%s", str);
+
+    while(str[p]!=' ' || str[p]!='\0'){
+      first[i] = str[p];
+      // printf("%c\n", str[p]);
+      i++;
+      p++;
+    }
+    *n = p;
+}//end of firstWord()
+
 void wordsToNum(char str[]){
 /******************************************************************************
   Accepts a number in word form (from zero to 1 million)
   and returns it in numerical form. Input must be in lowercase.
 ******************************************************************************/
+  int cnt, spaces, n=0;  // if 1 = million, 2 = thousand, 3 = hundred
+  char current[20], remaining[100];
+
   removeBN(str);
+  spaces = countSpaces(str);
+  printf("spaces: %d\n", spaces);
   // compareOnes(str);
-  compareTens(str);
+  // compareTens(str);
 }//end of wordsToNum()
 
 void wordsToCurrency(){
