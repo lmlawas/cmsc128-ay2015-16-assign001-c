@@ -99,7 +99,7 @@ void numToWords(int num){
     // ones
     if(num>=1) printOnes(num);
   }
-  else printf("Error. Number too big.");
+  else printf("\nError. Number too big.\n");
 
 }//end of numToWords()
 
@@ -176,11 +176,80 @@ void wordsToCurrency(){
 ******************************************************************************/
 }//end of wordsToCurrency()
 
-void numberDelimited(){
+void numberDelimited(int num, char del, int jmp){
 /******************************************************************************
   Accepts three arguments: the first is the number from zero to 1 million,
   the second is the delimiter to be used (single character only) and the third,
   the number of jumps when the delimiter will appear (from right most
   going to left most digit)
 ******************************************************************************/
+  int arr[7];
+  int i=0, j, diff, skip=0;
+  char output[20];
+
+  if(!(num>=10000000)){
+    // millions place
+    if(num>=1000000){
+      arr[i] = num/1000000;
+      num = num%1000000;
+      i++;
+    }
+    // hundred thousands place
+    if(num>=100000){
+      arr[i] = num/100000;
+      num = num%100000;
+      i++;
+    }
+    // ten thousands place
+    if(num>=10000){
+      arr[i] = num/10000;
+      num = num%10000;
+      i++;
+    }
+    // thousands place
+    if(num>=1000){
+      arr[i] = num/1000;
+      num = num%1000;
+      i++;
+    }
+    // hundreds place
+    if(num>=100){
+      arr[i] = num/100;
+      num = num%100;
+      i++;
+    }
+    // tens place
+    if(num>=10){
+      arr[i] = num/10;
+      num = num%10;
+      i++;
+    }
+    // ones place
+    if(num>=0){
+      arr[i] = num;
+    }
+
+    // print with delimiter
+    printf("\nResult:");
+    for(j=0;j<=i;j++){
+      skip = 0; // skip is "false"
+      diff = i; // diff = max index
+      while(diff>0){
+        diff = diff-jmp;
+        if(j-1==diff&&diff>=0){
+          // print with delimiter if max index minus 1 equals diff
+          printf("%c%d", del, arr[j]);
+          // skip has been performed therefore skip is "true"
+          skip = 1;
+        }
+      }
+      if(skip==0){
+        // if skip is false, arr[j] has not yet been printed therefore print it
+        printf("%d", arr[j]);
+      }
+    }
+    printf("\n");
+  }
+  else printf("\nError. Number too big.\n");
+
 }//end of numberDelimited()
