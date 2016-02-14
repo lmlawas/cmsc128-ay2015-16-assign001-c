@@ -202,7 +202,8 @@ void wordsToNum(char str[]){
   Accepts a number in word form (from zero to 1 million)
   and returns it in numerical form. Input must be in lowercase.
 ******************************************************************************/
-  int i, spaces, cnt=0, index=0;
+  int i, spaces, index=0, place=0;
+  //place = -1(default), 1(M), 2(HTh), 3(TTh), 4(Th), 5(H), 6(T), 7(O)
   int result[7]={1,2,3};  // printf("\t%d\n",result[index]);
   char current[20]="abc", remaining[100];
   char *p;  // pointer to one character in string str
@@ -218,13 +219,16 @@ void wordsToNum(char str[]){
     if(result[index]==-1) goto wordsToNumError;
     else{
       index++;
-      //goto thousands;
+      //goto case;
     }
   }
-  else index++;
-  p = oneWord(p, current, &spaces);
+  else{
+    index++;
+    p = oneWord(p, current, &spaces);
+  }
 
   // CASE 1: with millions and no proceeding numbers
+  case1:
   if((!strcmp(current, "million")) && p==NULL){
     for(i=1;i<7;i++){
       result[index] = 0;
@@ -233,73 +237,42 @@ void wordsToNum(char str[]){
     goto printNum;
   }//end CASE 1
 
-  // CASE 2: with millions and with proceeding numbers
-  else if(!strcmp(current, "million") && p!=NULL){
-    p = oneWord(str, current, &spaces);
+  if((!strcmp(current, "million")) && p!=NULL){
+    place=1;  // with million
+    p = oneWord(p, current, &spaces);
     result[index] = compareOnes(current);
-
-    //if compareOnes() does not match
     if(result[index]==-1){
       result[index] = compareTens(current);
       if(result[index]==-1) goto wordsToNumError;
-      else goto thousands;
+      // else
     }
-
-    //if it matches
     else{
       index++;
-      p = oneWord(str, current, &spaces);
+      p = oneWord(p, current, &spaces);
+      goto case2;
+    }
+  }
 
-      // CASE 3: with hundreds and no proceeding numbers
-      if(!strcmp(current, "hundred") && p==NULL){
-        result[4] = result[index-1];  //move to hundreds place
-        for(i=index;i<4;i++){
-          result[index] = 0;
-          index++;
-        }
-        index++;
-        for(i=index;i<7;i++){
-          result[index] = 0;
-          index++;
-        }
-        goto printNum;  // print millions and hundreds
-      }//end CASE 3
-
-      // CASE 4: with hundreds and proceeding numbers
-      else if(!strcmp(current, "hundred") && p!=NULL){
-        p = oneWord(str, current, &spaces);
-        result[index] = compareOnes(current);
-
-        // if compareOnes() is not match
-        if(result[index]==-1){
-          result[index] = compareTens(current);
-          if(result[index]==-1) goto wordsToNumError;
-          else{
-            index++;
-            p = oneWord(str, current, &spaces);
-            if(!strcmp(current, "thousand")&&p==NULL){
-              if(result[index-1]>9){
-                int temp;
-                temp = result[index-1];
-                result[index-1] = temp/10;
-                result[index] = temp%10;
-                index++;
-              }
-              for(i=index;i<7;i++){
-                result[i] = 0;
-              }
-              goto printNum;
-            }
-          }
-        }
-
-        //else compareOnes() is match
-        else{
-          index++;
-          p = oneWord(str, current, &spaces);
-
-        }
-      }
+  // CASE 2: with hundreds and no proceeding numbers
+  case2:
+  if((!strcmp(current, "hundred")) && p==NULL){
+    if(place==1){
+      printf("MILLION");
+      result[4] = result[index-1];
+      result[1] = 0;
+      result[2] = 0;
+      result[3] = 0;
+      result[5] = 0;
+      result[6] = 0;
+      index = 7;
+      goto printNum;
+    }
+    else{
+      printf("HUNDRED");
+      result[1] = 0;
+      result[2] = 0;
+      index = 3;
+      goto printNum;
     }
   }
 
