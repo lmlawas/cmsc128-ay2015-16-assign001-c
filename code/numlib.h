@@ -203,7 +203,7 @@ void wordsToNum(char str[]){
   and returns it in numerical form. Input must be in lowercase.
 ******************************************************************************/
   int i, spaces, index=0, place=0;
-  //place = -1(default), 1(M), 2(HTh), 3(TTh), 4(Th), 5(H), 6(T), 7(O)
+  //place = -1(default), 1(M), 2(Th), 3(H), 4(T), 5(O)
   int result[7]={1,2,3};  // printf("\t%d\n",result[index]);
   char current[20]="abc", remaining[100];
   char *p;  // pointer to one character in string str
@@ -227,16 +227,18 @@ void wordsToNum(char str[]){
     p = oneWord(p, current, &spaces);
   }
 
-  // CASE 1: with millions and no proceeding numbers
+  // CASE 1: with millions
   case1:
+  // with no proceeding numbers
   if((!strcmp(current, "million")) && p==NULL){
     for(i=1;i<7;i++){
       result[index] = 0;
       index++;
     }
     goto printNum;
-  }//end CASE 1
+  }
 
+  // with proceeding numbers
   if((!strcmp(current, "million")) && p!=NULL){
     place=1;  // with million
     p = oneWord(p, current, &spaces);
@@ -251,13 +253,13 @@ void wordsToNum(char str[]){
       p = oneWord(p, current, &spaces);
       goto case2;
     }
-  }
+  }//end CASE 1
 
-  // CASE 2: with hundreds and no proceeding numbers
+  // CASE 2: with hundreds
   case2:
+  // with no proceeding numbers
   if((!strcmp(current, "hundred")) && p==NULL){
     if(place==1){
-      printf("MILLION");
       result[4] = result[index-1];
       result[1] = 0;
       result[2] = 0;
@@ -267,11 +269,31 @@ void wordsToNum(char str[]){
       index = 7;
       goto printNum;
     }
-    else{
-      printf("HUNDRED");
+    else{    
       result[1] = 0;
       result[2] = 0;
       index = 3;
+      goto printNum;
+    }
+  }
+
+  // with proceeding numbers
+  if((!strcmp(current, "hundred")) && p!=NULL){
+    place=3;  // with hundred
+    p = oneWord(p, current, &spaces);
+    if((!strcmp(current, "thousand")) && p==NULL){
+      goto case3;
+    }
+  }// end CASE 2
+
+  //CASE 3: with thousands
+  case3:
+  if((!strcmp(current, "thousand")) && p==NULL){
+    if(place==3){
+      for(i=2;i<7;i++){
+        result[i] = 0;
+      }
+      index = 7;
       goto printNum;
     }
   }
