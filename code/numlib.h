@@ -109,52 +109,54 @@ void removeBN(char x[]){
   with backslash zero.
 ******************************************************************************/
 	int i;
-	for(i = 0; i<strlen(x); i++){
+	for(i = 0; i<strlen(x); i++){  // travers the string x
 		if(x[i]=='\n'){
-			x[i] = '\0';
+			x[i] = '\0'; // replace newline with null character
 		}
 	}
 }//end of removeBN()
 
-void compareOnes(char str[]){
+int compareOnes(char str[]){
 /******************************************************************************
-  Accepts string str and prints corresponding word-to-number form
-  for the ones place digit.
+  Accepts string str and returns corresponding word-to-number form
+  for the ones place digit, or -1 if no match is found
 ******************************************************************************/
-  if(strcmp(str, "one")==0) printf("1");
-  else if(strcmp(str, "two")==0) printf("2");
-  else if(strcmp(str, "three")==0) printf("3");
-  else if(strcmp(str, "four")==0) printf("4");
-  else if(strcmp(str, "five")==0) printf("5");
-  else if(strcmp(str, "six")==0) printf("6");
-  else if(strcmp(str, "seven")==0) printf("7");
-  else if(strcmp(str, "eight")==0) printf("8");
-  else if(strcmp(str, "nine")==0) printf("9");
+  if(strcmp(str, "one")==0) return 1;
+  else if(strcmp(str, "two")==0) return 2;
+  else if(strcmp(str, "three")==0) return 3;
+  else if(strcmp(str, "four")==0) return 4;
+  else if(strcmp(str, "five")==0) return 5;
+  else if(strcmp(str, "six")==0) return 6;
+  else if(strcmp(str, "seven")==0) return 7;
+  else if(strcmp(str, "eight")==0)return 8;
+  else if(strcmp(str, "nine")==0) return 9;
+  else return -1;
 }//end of compareOnes()
 
-void compareTens(char str[]){
+int compareTens(char str[]){
 /******************************************************************************
-  Accepts string str and prints corresponding word-to-number form
-  for the tens place digit.
+  Accepts string str and returns corresponding word-to-number form
+  for the tens place digit, or -1 if no match is found
 ******************************************************************************/
-  if(strcmp(str, "ten")==0) printf("10");
-  else if(strcmp(str, "eleven")==0) printf("11");
-  else if(strcmp(str, "twelve")==0) printf("12");
-  else if(strcmp(str, "thirteen")==0) printf("13");
-  else if(strcmp(str, "fourteen")==0) printf("14");
-  else if(strcmp(str, "fifteen")==0) printf("15");
-  else if(strcmp(str, "sixteen")==0) printf("16");
-  else if(strcmp(str, "seventeen")==0) printf("17");
-  else if(strcmp(str, "eighteen")==0) printf("18");
-  else if(strcmp(str, "nineteen")==0) printf("19");
-  else if(strcmp(str, "twenty")==0) printf("2");
-  else if(strcmp(str, "thirty")==0) printf("3");
-  else if(strcmp(str, "fourty")==0) printf("4");
-  else if(strcmp(str, "fifty")==0) printf("5");
-  else if(strcmp(str, "sixty")==0) printf("6");
-  else if(strcmp(str, "seventy")==0) printf("7");
-  else if(strcmp(str, "eighty")==0) printf("8");
-  else if(strcmp(str, "ninety")==0) printf("9");
+  if(strcmp(str, "ten")==0) return  10;
+  else if(strcmp(str, "eleven")==0) return 11;
+  else if(strcmp(str, "twelve")==0) return 12;
+  else if(strcmp(str, "thirteen")==0) return 13;
+  else if(strcmp(str, "fourteen")==0) return 14;
+  else if(strcmp(str, "fifteen")==0) return 15;
+  else if(strcmp(str, "sixteen")==0) return 16;
+  else if(strcmp(str, "seventeen")==0) return 17;
+  else if(strcmp(str, "eighteen")==0) return 18;
+  else if(strcmp(str, "nineteen")==0) return 19;
+  else if(strcmp(str, "twenty")==0) return 2;
+  else if(strcmp(str, "thirty")==0) return 3;
+  else if(strcmp(str, "fourty")==0) return 4;
+  else if(strcmp(str, "fifty")==0) return 5;
+  else if(strcmp(str, "sixty")==0) return 6;
+  else if(strcmp(str, "seventy")==0) return 7;
+  else if(strcmp(str, "eighty")==0) return 8;
+  else if(strcmp(str, "ninety")==0) return 9;
+  else return -1;
 }//end of compareTens()
 
 int countSpaces(char str[]){
@@ -171,16 +173,20 @@ int countSpaces(char str[]){
 char* oneWord(char str[], char first[], int *spaces){
 /******************************************************************************
   Accepts a string str and gets the word based on number of spaces,
-  then returns address of
+  then returns address of the character or NULL
 ******************************************************************************/
   int i, j=0;
 
   for(i=0;i<strlen(str);i++){
-    // if space or null character is encountered and spaces not zero
-    if((str[i]==' ' || str[i]=='\0') && *spaces!=0){
+    // if space character is encountered and int spaces not zero
+    if((str[i]==' ') && *spaces!=0){
       first[j] = '\0';  // null character to end strig first
-      (*spaces)--;
-      return &str[i+1];
+      (*spaces)--;  // update spaces remaining
+      return &str[i+1]; // return first character of next word(s) in str
+    }
+    // else if str reaches the null character
+    else if(str[i]=='\0'){
+      return NULL;  // if the string str has been fully traversed
     }
     // else part of first string
     else{
@@ -196,9 +202,11 @@ void wordsToNum(char str[]){
   Accepts a number in word form (from zero to 1 million)
   and returns it in numerical form. Input must be in lowercase.
 ******************************************************************************/
-  int spaces, cnt=0;
+  int spaces, cnt=0, index=0, place=1;
+  // place = 1(million), 2(hundred thousand), 3(thousand), 4(hundred), 0(ones)
+  int result[7];
   char current[20]="abc", remaining[100];
-  char *p;
+  char *p;  // pointer to one character in string str
 
   removeBN(str);
   spaces = countSpaces(str);
@@ -206,7 +214,28 @@ void wordsToNum(char str[]){
   p = oneWord(str, current, &spaces);
   printf("s: %s", current);
   compareOnes(current);
-  // compareTens(str);
+  p = oneWord(p, current, &spaces);
+  compareTens(current);
+
+
+    // Pseudocode of algorithm:
+
+    checkMillions(){
+      result[index] = compareOnes(current);
+      if(strcmp(current, "million")&&p==NULL)
+    }
+    place=2;
+    checkHundredThousand(){
+      compareOnes(current);
+      if(strcmp(current, "hundred")&&p==NULL) printf("00000");
+      else{
+        place=3;
+        printf("0");
+      }
+      compareTens(current);
+      if(strcmp(current, "thousand")&&p==NULL) printf("000");
+    }
+
 }//end of wordsToNum()
 
 void wordsToCurrency(){
